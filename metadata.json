@@ -1,0 +1,17 @@
+{
+  "author": "Oliver Castle",
+  "license": "Apache License, Version 2.0",
+  "name": "ocastle-win_service",
+  "operatingsystem_support": [
+  	{
+  		"operatingsystem":"Windows"
+  	}
+  ],
+  "project_page": "",
+  "requirements": [],
+  "source": "http:s//github.com/ocastle/win_service.git",
+  "summary": "This module allows for the setup and configuration management of Windows Services. Requires",
+  "tags": ["Windows", "Service"],
+  "dependencies": [],
+  "version": "0.0.2"
+}
