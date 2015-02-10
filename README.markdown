@@ -1,10 +1,40 @@
-# win_service #
+# win_service
 
-This a first attempt at creating a puppet type and provider to manage the configuration of windows services. This currently is utilizing Ruby for pulling properties from a node and using the windows SCM to create services.
-Future updates will move to fully using either ruby gems or the Windows SCM.
+Custom Type Provider for the creation/configuration of Windows Services. Currently this determins services installed to a Windows Host using the ruby gem 'win32-service'.
+All updates to service configurations are facilitated with the sc.exe within Windows SCM.
 
-README Updates to Follow.
+The module is avialable from: https://forge.puppetlabs.com/ocastle/win_service
 
+## Pre-requisites
 
+- Windows
+- Puppet installed via the Windows Installer
+- 'win32-service' ruby gem
 
+## Example Usage
 
+```puppet
+
+#Sample usage with minimum values given.
+
+      win_service { 'defragsvc':
+        ensure             => 'present',
+        display_name       => 'Disk Defragmeter',
+        binary_path_name   => 'C:\Windows\system32\svchost.exe -k defragsvc',
+        service_start_name => 'localSystem',
+        start_type         => 'demand',
+}
+
+#Sample usage when using an account other than localsystem.
+
+      win_service { 'defragsvc':
+        ensure                 => 'present',
+        display_name           => 'Disk Defragmenter',
+        binary_path_name       => 'C:\Windows\system32\svchost.exe -k defragsvc',
+        service_start_name     => 'Your-Account-Name',
+        password               => 'password',
+        start_type             => 'demand',
+        password_checksum_path => 'Path\to\put\md5\checksum',
+}
+
+```
