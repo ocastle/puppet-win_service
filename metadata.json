@@ -7,11 +7,11 @@
   		"operatingsystem":"Windows"
   	}
   ],
-  "project_page": "",
+  "project_page": "https://github.com/ocastle/puppet-win_service",
   "requirements": [],
   "source": "http:s//github.com/ocastle/win_service.git",
   "summary": "This module allows for the setup and configuration management of Windows Services. Requires",
   "tags": ["Windows", "Service"],
   "dependencies": [],
-  "version": "0.0.2"
+  "version": "0.0.4"
 }
