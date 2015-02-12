@@ -1,17 +1,18 @@
 {
   "author": "Oliver Castle",
-  "license": "Apache License, Version 2.0",
+  "license": "Apache License-2.0",
   "name": "ocastle-win_service",
   "operatingsystem_support": [
   	{
   		"operatingsystem":"Windows"
   	}
   ],
-  "project_page": "https://github.com/ocastle/puppet-win_service",
+  "project_page": "https://forge.puppetlabs.com/ocastle/win_service",
+  "issues_url": "https://github.com/ocastle/puppet-win_service/issues",
   "requirements": [],
-  "source": "http:s//github.com/ocastle/win_service.git",
+  "source": "https://github.com/ocastle/puppet-win_service",
   "summary": "This module allows for the setup and configuration management of Windows Services. Requires",
-  "tags": ["Windows", "Service"],
+  "tags": ["windows", "service", "win32"],
   "dependencies": [],
-  "version": "0.0.6"
+  "version": "0.0.7"
 }
