@@ -7,12 +7,12 @@
   		"operatingsystem":"Windows"
   	}
   ],
-  "project_page": "https://forge.puppetlabs.com/ocastle/win_service",
+  "project_page": "https://github.com/ocastle/puppet-win_service",
+  "source": "https://github.com/ocastle/puppet-win_service",
   "issues_url": "https://github.com/ocastle/puppet-win_service/issues",
   "requirements": [],
-  "source": "https://github.com/ocastle/puppet-win_service",
-  "summary": "This module allows for the setup and configuration management of Windows Services. Requires",
+  "summary": "This module allows for the setup and configuration management of Windows Services.",
   "tags": ["windows", "service", "win32"],
   "dependencies": [],
-  "version": "0.0.7"
+  "version": "0.0.8"
 }
