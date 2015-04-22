@@ -64,10 +64,11 @@ Puppet::Type.type(:win_service).provide(:win32) do
     service_instances
   end
 
- def self.get_start_type(servicename, starttype_property)
+  def self.get_start_type(starttype_property, delayed_start)
     case starttype_property
     when 'auto start'
-      if self.delayed?(servicename) == true
+      if delayed_start == true
+        #Puppet.debug "Auto Start determined to be delayed"
         return 'delayed-auto'
       else
         return 'auto'
