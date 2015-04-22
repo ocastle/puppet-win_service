@@ -37,6 +37,29 @@ Puppet::Type.newtype(:win_service) do
     desc "Directory path to password checksum file"
   end
 
+  newproperty(:reset_period)do
+    desc "Length of the period (in seconds) with no failurs after which the failure count should be reset to 0. Requires failure_actions attribute be provided"
+    defaultto "0"
+    validate do |value|
+      unless value =~ /^\d+$/
+        raise ArugmentError, 'win_service::reset_period invalid, must enter a time in milliseconds'
+      end
+    end
+  end
+
+  newproperty(:reboot_message)do
+    desc "Message to broadcase when service fails."
+  end
+
+  newproperty(:command)do
+    desc "Command line command to be run when the service fails."
+  end
+
+
+  newproperty(:failure_actions, :array_matching => :all)do
+    desc "Specifies one to three failure actions and their delay times (in milliseconds). Valid actions are run, restart, reboot. Requires reset_period attribue be provided"
+  end
+
   autorequire(:file) do
     self[:binary_path_name] if self[:binary_path_name] and Pathname.new(self[:binary_path_name]).absolute?
   end
