@@ -174,29 +174,9 @@ Puppet::Type.type(:win_service).provide(:win32) do
     return mode
   end
 
-  def key_exists?(path,key)
-    reg_type = Win32::Registry::KEY_READ
-    Win32::Registry::HKEY_LOCAL_MACHINE.open(path, reg_type) do |reg|
-      begin
-        regkey = reg[key]
-        return true
-      rescue
-        return false
-      end
     end
   end
 
-  def write_regvalue(action, path, key, value)
-    reg_type = Win32::Registry::KEY_ALL_ACCESS
-    Win32::Registry::HKEY_LOCAL_MACHINE.open(path, reg_type) do |reg|
-      case action
-      when "create"
-        reg.write(key, Win32::Registry::REG_DWORD, value)
-      when "edit"
-        reg[key] = value
-      end
-    end
-  end
 
   def destroy_service
     Puppet.debug "Delete Service #{resource[:name]}"
