@@ -18,6 +18,21 @@ Puppet::Type.type(:win_service).provide(:win32) do
     @property_flush = {}
   end
 
+  def self.instances
+    get_services.collect do |int|
+      service_properties = get_service_properties(int)
+      new(service_properties)
+    end
+  end
+
+  def self.prefetch(resources)
+    instances.each do |prov|
+      if resource = resources[prov.name]
+        resource.provider = prov
+      end
+    end
+  end
+
   def self.get_services
     services = []
     Puppet.debug "Get array of service instances"
@@ -97,20 +112,6 @@ Puppet::Type.type(:win_service).provide(:win32) do
     end
   end
 
-  def self.instances
-    get_services.collect do |int|
-      service_properties = get_service_properties(int)
-      new(service_properties)
-    end
-  end
-
-  def self.prefetch(resources)
-    instances.each do |prov|
-      if resource = resources[prov.name]
-        resource.provider = prov
-      end
-    end
-  end
   #################################
 
   ### Additional Helper Methods ###
