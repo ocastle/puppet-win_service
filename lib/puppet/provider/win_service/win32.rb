@@ -19,8 +19,7 @@ Puppet::Type.type(:win_service).provide(:win32) do
   end
 
   def self.instances
-    get_services.collect do |int|
-      service_properties = get_service_properties(int)
+    get_service_properties().collect do |service_properties|
       new(service_properties)
     end
   end
@@ -33,41 +32,43 @@ Puppet::Type.type(:win_service).provide(:win32) do
     end
   end
 
-  def self.get_services
-    services = []
-    Puppet.debug "Get array of service instances"
-    Service.services do |service|
-      services.push(service.service_name)
-    end
-    services
-  end
-
-  def self.get_service_properties(service_name)
+  def self.get_service_properties(service_name=nil)
+    service_instances = []
     service_properties = {}
 
-    begin
-      Puppet.debug "Get #{service_name} service properties"
-      output = Service.config_info(service_name) rescue nil
-    rescue Puppet::ExecutionFailure => e
-      raise Puppet::Error, "#win_service tried to get_service_properties for #{service_name} and failed to return a non-zero"
+    if service_name == nil
+      Puppet.debug "Return properties for all service instances"
+      service_list = Service.services
+    else
+      Puppet.debug "Return properties for #{service_name}"
+      service_list = Service.services.select { |svc| svc.service_name=="#{service_name}" }
     end
 
-    service_properties[:ensure]             = output == nil ? :absent : :present
-    service_properties[:name]               = service_name
-    if output != nil
+    service_list.each do |output|
+
+      #Assign properties to hash keys
+      service_properties[:ensure]             = output == nil ? :absent : :present
+      service_properties[:name]               = output.service_name
       service_properties[:display_name]       = output.display_name
       service_properties[:service_type]       = output.service_type
-      #service_properties[:error_control]      = output.error_control
-      #service_properties[:load_order_group]   = output.load_order_group
-      #service_properties[:tag_id]             = output.tag_id
-      #service_properties[:dependencies]       = output.dependencies
       service_properties[:binary_path_name]   = output.binary_path_name
-      service_properties[:service_start_name] = output.service_start_name
-      service_properties[:start_type]         = get_start_type(service_name, output.start_type)
+      service_properties[:service_start_name] = output.start_name
+      service_properties[:start_type]         = get_start_type(output.start_type, output.delayed_start)
+      service_properties[:reset_period]       = output.reset_period
+      service_properties[:reboot_message]     = output.reboot_message
+      service_properties[:command]            = output.command
+      service_properties[:failure_actions]    = output.actions
+
+      #Puppet.debug "Service properties:  #{service_properties.inspect}"
+      service_instances.push(service_properties)
     end
-    Puppet.debug "Service properties:  #{service_properties.inspect}"
-    service_properties
+    service_instances
   end
+
+
+
+
+
 
   def self.key_exists?(path,key)
     reg_type = Win32::Registry::KEY_READ
