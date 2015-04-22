@@ -65,11 +65,6 @@ Puppet::Type.type(:win_service).provide(:win32) do
     service_instances
   end
 
-
-
-
-
-
   def self.key_exists?(path,key)
     reg_type = Win32::Registry::KEY_READ
     Win32::Registry::HKEY_LOCAL_MACHINE.open(path, reg_type) do |reg|
