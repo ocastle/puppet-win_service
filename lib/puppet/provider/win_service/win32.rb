@@ -1,7 +1,6 @@
 require 'puppet'
 require 'win32/service'
 require 'digest/md5'
-require 'win32/registry'
 include Win32
 
 Puppet::Type.type(:win_service).provide(:win32) do
@@ -65,35 +64,7 @@ Puppet::Type.type(:win_service).provide(:win32) do
     service_instances
   end
 
-  def self.key_exists?(path,key)
-    reg_type = Win32::Registry::KEY_READ
-    Win32::Registry::HKEY_LOCAL_MACHINE.open(path, reg_type) do |reg|
-      begin
-        regkey = reg[key]
-        return true
-      rescue
-        return false
-      end
-    end
-  end
-
-  def self.delayed?(service_name)
-    registry_path = "SYSTEM\\CurrentControlSet\\services\\#{service_name}"
-
-    if key_exists?(registry_path, 'DelayedAutostart')
-      Win32::Registry::HKEY_LOCAL_MACHINE.open(registry_path) do |reg|
-        if reg['DelayedAutostart'] == 1
-          return true
-        else
-          return false
-        end
-      end
-    else
-      return false
-    end
-  end
-
-  def self.get_start_type(servicename, starttype_property)
+ def self.get_start_type(servicename, starttype_property)
     case starttype_property
     when 'auto start'
       if self.delayed?(servicename) == true
