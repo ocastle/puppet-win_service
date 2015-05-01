@@ -35,7 +35,6 @@ Puppet::Type.type(:win_service).provide(:win32) do
 
   def self.get_service_properties(service_name=nil)
     service_instances = []
-    service_properties = {}
 
     if service_name == nil
       Puppet.debug "Return properties for all service instances"
