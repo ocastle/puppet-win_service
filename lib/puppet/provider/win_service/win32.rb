@@ -18,9 +18,11 @@ Puppet::Type.type(:win_service).provide(:win32) do
   end
 
   def self.instances
+    instances = []
     get_service_properties().collect do |service_properties|
-      new(service_properties)
+      instances << new(service_properties)
     end
+    instances
   end
 
   def self.prefetch(resources)
@@ -43,8 +45,8 @@ Puppet::Type.type(:win_service).provide(:win32) do
       service_list = Service.services.select { |svc| svc.service_name=="#{service_name}" }
     end
 
-    service_list.each do |output|
-
+    service_list.collect do |output|
+      service_properties = {}
       #Assign properties to hash keys
       service_properties[:ensure]             = output == nil ? :absent : :present
       service_properties[:name]               = output.service_name
@@ -58,13 +60,14 @@ Puppet::Type.type(:win_service).provide(:win32) do
       service_properties[:command]            = output.command
       service_properties[:failure_actions]    = output.actions
 
-      #Puppet.debug "Service properties:  #{service_properties.inspect}"
+      Puppet.debug "Service properties:  #{service_properties.inspect}"
       service_instances.push(service_properties)
     end
     service_instances
   end
 
   def self.get_start_type(starttype_property, delayed_start)
+
     case starttype_property
     when 'auto start'
       if delayed_start == true
