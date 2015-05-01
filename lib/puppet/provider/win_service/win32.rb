@@ -70,7 +70,6 @@ Puppet::Type.type(:win_service).provide(:win32) do
     case starttype_property
     when 'auto start'
       if delayed_start == true
-        #Puppet.debug "Auto Start determined to be delayed"
         return 'delayed-auto'
       else
         return 'auto'
@@ -175,10 +174,6 @@ Puppet::Type.type(:win_service).provide(:win32) do
     end
     return mode
   end
-
-    end
-  end
-
 
   def destroy_service
     Puppet.debug "Delete Service #{resource[:name]}"
