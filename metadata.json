@@ -14,5 +14,5 @@
   "summary": "This module allows for the setup and configuration management of Windows Services.",
   "tags": ["windows", "service", "win32"],
   "dependencies": [],
-  "version": "0.0.8"
+  "version": "0.0.9"
 }
