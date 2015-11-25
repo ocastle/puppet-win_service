@@ -1,5 +1,5 @@
 require 'puppet'
-require 'win32/service'
+require 'win32/service' if Puppet.features.microsoft_windows?
 require 'digest/md5'
 include Win32
 
