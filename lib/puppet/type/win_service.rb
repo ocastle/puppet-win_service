@@ -27,6 +27,14 @@ Puppet::Type.newtype(:win_service) do
 
   newproperty(:service_start_name)do
     desc "User name that service runs as"
+    munge do |value|
+      case value
+      when /^\w.+$/
+        value
+      else
+        'LocalSystem'
+      end
+    end
   end
 
   newparam(:password) do
